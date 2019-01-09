@@ -80,6 +80,6 @@ test:
 #
 production:
   <<: *default
-  database: db_apps
-  username: apps
-  password: apps
+  database: {{app_db_name}}
+  username: {{app_db_user}}
+  password: {{app_db_password}}

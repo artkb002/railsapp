@@ -1,0 +1,6 @@
+---
+- name: Sync repo
+  git:
+   repo: https://github.com/artkb002/railsapp.git
+   dest: /u01/apps/hello
+   version: master

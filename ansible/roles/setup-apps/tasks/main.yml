@@ -1,0 +1,10 @@
+---
+# tasks file for setup-apps
+- name: APP sync
+  include: app_sync.yml
+
+- name: APP setup
+  include: app_setup.yml
+
+- name: APP update
+  include: app_update.yml  

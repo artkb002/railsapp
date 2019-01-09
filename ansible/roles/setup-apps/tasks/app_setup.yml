@@ -1,0 +1,20 @@
+---
+- name: APP install gems
+  bundler:
+   state: present
+   gemfile: /u01/apps/{{app_name}}/Gemfile
+
+- name: APP setup database
+  template: 
+   src: ../templates/database.j2
+   dest: /u01/apps/{{app_name}}/config/database.yml
+   owner: apps 
+   group: apps
+   mode: 0664
+
+- name: APP setup database migrate
+  shell: bundle exec rake db:migrate
+  args:
+   chdir: "{{app_dir}}"
+  environment:
+    RAILS_ENV: "{{app_env}}"

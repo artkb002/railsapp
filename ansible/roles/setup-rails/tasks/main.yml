@@ -1,0 +1,4 @@
+---
+# tasks file for setup-rails
+- name: PostgreSQL
+  include: postgresql.yml

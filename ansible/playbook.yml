@@ -1,0 +1,15 @@
+---
+- name: Prepare Host for env
+  hosts: localmachine
+
+  roles:
+          - role: setup-os
+            tags: ['os']
+
+          - role: setup-rails
+            tags: ['rails']
+
+          - role: setup-apps
+            become_user: apps
+            become: yes
+            tags: ['apps']
