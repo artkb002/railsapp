@@ -1,6 +1,6 @@
 ---
 - name: Prepare Host for env
-  hosts: localmachine
+  hosts: all
 
   roles:
           - role: setup-os
@@ -10,6 +10,12 @@
             tags: ['rails']
 
           - role: setup-apps
-            become_user: apps
+            become_user: "{{VMUSER}}"
             become: yes
+            ignore_errors: true
             tags: ['apps']
+
+          - role: setup-prod
+            when: inventory_hostname == "prod"
+            tags: ['prod']
+

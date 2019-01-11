@@ -6,5 +6,5 @@
 - name: APP setup
   include: app_setup.yml
 
-- name: APP update
-  include: app_update.yml  
+- name: APP reload
+  include: app_reload.yml  

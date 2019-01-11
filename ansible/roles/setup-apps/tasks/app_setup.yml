@@ -2,14 +2,14 @@
 - name: APP install gems
   bundler:
    state: present
-   gemfile: /u01/apps/{{app_name}}/Gemfile
+   gemfile: /u01/{{VMUSER}}/{{app_name}}/Gemfile
 
 - name: APP setup database
   template: 
    src: ../templates/database.j2
-   dest: /u01/apps/{{app_name}}/config/database.yml
-   owner: apps 
-   group: apps
+   dest: /u01/{{VMUSER}}/{{app_name}}/config/database.yml
+   owner: "{{VMUSER}}" 
+   group: "{{VMUSER}}"
    mode: 0664
 
 - name: APP setup database migrate
@@ -18,3 +18,41 @@
    chdir: "{{app_dir}}"
   environment:
     RAILS_ENV: "{{app_env}}"
+
+- name: APP setup secrets
+  shell: bundle exec rake secret
+  args:
+    chdir: "{{app_dir}}"
+  environment:
+    RAILS_ENV: "{{app_env}}"
+  register: pass
+  tags: secret
+
+- name: APP setup update secret
+  template:
+   src: ../templates/secrets.j2
+   dest: "/u01/{{VMUSER}}/hello/config/secrets.yml"
+   owner: "{{VMUSER}}"
+   group: "{{VMUSER}}"
+   mode: 0600
+  tags: secret
+
+- name: OS Add nginx app page
+  template:
+   src: ../templates/hello.j2
+   dest: /etc/nginx/sites-available/hello.conf
+   owner: root
+   group: root
+   mode: '0644'
+  become_user: root
+  become: yes
+
+- name: OS Link nginx app page
+  file:
+   src: /etc/nginx/sites-available/hello.conf
+   dest: /etc/nginx/sites-enabled/hello.conf
+   owner: root
+   group: root
+   state: link
+  become_user: root
+  become: yes 

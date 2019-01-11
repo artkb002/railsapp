@@ -1,2 +1,2 @@
-[localmachine]
-devtest ansible_connection=local
+[machines]
+localhost ansible_connection=local
