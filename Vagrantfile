@@ -2,7 +2,7 @@ Vagrant.configure("2") do |config|
 ######################################################
 #    SETUP SECTION
 ######################################################
-  VMNAME="prod"
+  VMNAME="dev"
   VMUSER="apps"
   VMIP="172.17.177.25"
   ENV['VAGRANT_DEFAULT_PROVIDER'] = "virtualbox"
