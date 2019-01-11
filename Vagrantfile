@@ -1,10 +1,8 @@
-
-
 Vagrant.configure("2") do |config|
 ######################################################
 #    SETUP SECTION
 ######################################################
-  VMNAME="dev"
+  VMNAME="prod"
   VMUSER="apps"
   VMIP="172.17.177.25"
   ENV['VAGRANT_DEFAULT_PROVIDER'] = "virtualbox"
@@ -39,7 +37,6 @@ Vagrant.configure("2") do |config|
 	  config.vm.provision "ansible_local" do |ansible|
 		ansible.compatibility_mode = "auto"
 		ansible.playbook = "ansible/playbook.yml"
-	#	ansible.inventory_path = "ansible/inventory"
 		ansible.become = true
     ansible.extra_vars = { 
       VMNAME: "#{VMNAME}",
