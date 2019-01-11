@@ -1,0 +1,8 @@
+---
+# defaults file for setup-apps
+#
+
+  app_name: hello
+  app_env: production
+  app_dir: /u01/{{VMUSER}}/hello
+ 

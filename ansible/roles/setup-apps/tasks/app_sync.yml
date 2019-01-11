@@ -1,0 +1,24 @@
+---
+- name: Sync repo master
+  git:
+   repo: https://github.com/artkb002/railsapp.git
+   dest: "/u01/{{VMUSER}}/hello"
+   version: master
+  when: inventory_hostname == "prod"
+
+- name: Sync repo develop
+  git:
+   repo: https://github.com/artkb002/railsapp.git
+   dest: "/u01/{{VMUSER}}/hello"
+   version: develop
+  when: inventory_hostname != "prod"
+
+- name: Sync Clean Vagrant file
+  file:
+   path:  /u01/{{VMUSER}}/hello/Vagrantfile
+   state: absent
+
+- name: Sync Clean ansible folder
+  file:
+   path: /u01/{{VMUSER}}/hello/ansible
+   state: absent

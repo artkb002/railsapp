@@ -1,0 +1,16 @@
+- name: OS Enable password login
+  lineinfile: 
+   path: /etc/ssh/sshd_config 
+   regexp: '^(#\s*)?PasswordAuthentication ' 
+   line: 'PasswordAuthentication yes'
+    
+- name: OS setup apps pass
+  user:
+   name: "{{VMUSER}}"
+   password: "{{ 'app123' | password_hash('sha512') }}"
+   update_password: always
+
+- name: OS restart sshd
+  service: 
+   name: sshd 
+   state: restarted

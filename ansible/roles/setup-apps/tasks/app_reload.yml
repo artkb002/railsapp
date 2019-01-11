@@ -1,0 +1,17 @@
+---
+- name: APP refresh precompile app
+  shell: bundle exec rake assets:precompile db:migrate
+  args:
+    chdir: "{{app_dir}}"
+  environment:
+    RAILS_ENV: "{{app_env}}"
+  tags: secret
+
+- name: APP refresh restart nginx
+  service:
+    name: nginx
+    enabled: yes
+    state: restarted
+  tags: secret
+  become_user: root
+  become: yes 

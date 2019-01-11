@@ -1,0 +1,6 @@
+---
+# vars file for setup-rails
+
+  app_db_user: "{{VMUSER}}"
+  app_db_password: apps
+  app_db_name: db_apps

@@ -1,0 +1,68 @@
+- hostname:
+    name: "{{VMNAME}}"
+
+- name: Add passanger
+  copy:
+   dest: '/etc/apt/sources.list.d/passenger.list'
+   content: "deb https://oss-binaries.phusionpassenger.com/apt/passenger bionic main"
+   
+- name: Add an Apt signing key, will not download if present
+  apt_key:
+   id: 561F9B9CAC40B2F7
+   keyserver: hkp://keyserver.ubuntu.com:80
+   state: present
+
+
+- name: OS Install packages
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - ruby-rails
+    - dirmngr 
+    - gnupg
+    - apt-transport-https 
+    - ca-certificates
+    - nginx
+    - libnginx-mod-http-passenger
+    - postgresql-common
+    - postgresql
+    - libpq-dev
+    - ruby-pg
+    - python-psycopg2  
+
+- name: OS Create new dir
+  file:
+    path: /u01
+    state: directory
+    mode: 0755
+
+- name: OS Add user
+  user: 
+   name: "{{VMUSER}}"
+   home: "/u01/{{VMUSER}}"
+   ssh_key_bits: 2048
+   generate_ssh_key: true
+   shell: /bin/bash
+
+- name: OS Add generated private key
+  authorized_key: 
+   user: "{{item}}"
+   key: "{{ lookup('file', '/u01/{{VMUSER}}/.ssh/id_rsa.pub') }}"
+   state: present
+  with_items:
+      - "{{VMUSER}}"
+      - vagrant
+  ignore_errors: True
+
+- name: OS Copy generated private keys
+  copy:
+   src: "/u01/{{VMUSER}}/.ssh/id_rsa"
+   dest: /vagrant/id_rsa
+  ignore_errors: True
+
+ 
+- name: OS Remove nginx default page
+  file:
+   path: /etc/nginx/sites-enabled/default
+   state: absent

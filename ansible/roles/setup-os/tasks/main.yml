@@ -1,0 +1,7 @@
+---
+- name: OS setup all
+  include: setup-all.yml
+
+- name: OS setup dev
+  include: setup-dev.yml
+  when: inventory_hostname != "prod"

@@ -1,0 +1,45 @@
+---
+# tasks file for setup-prod
+- name: OS setup prod nginx proxy
+  template:
+   src: ../templates/proxy.j2
+   dest: /etc/nginx/sites-available/proxy.conf
+   owner: root
+   group: root
+   mode: '0644'
+
+- name: OS Link nginx proxy page
+  file:
+   src: /etc/nginx/sites-available/proxy.conf
+   dest: /etc/nginx/sites-enabled/proxy.conf
+   owner: root
+   group: root
+   state: link
+
+- name: OS nginx restart
+  service:
+    name: nginx
+    enabled: yes
+    state: restarted
+  become_user: root
+  become: yes
+
+- name: Install ufw
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - ufw
+
+- name: OS harde ufw reset
+  ufw:
+    state: reset 
+
+- name: OS harden ports
+  ufw:
+    state: enabled
+    policy: deny
+    rule: allow
+    port: 22,80
+    proto: tcp
+
