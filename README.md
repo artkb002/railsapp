@@ -6,13 +6,16 @@ vagrant provider
 Vagrantfile adjustment ( optionaly )
 
 
-
 Steps to run machine and login:
+
 0. Git clone
+
 a) master ( prod )
  git clone -b master https://github.com/artkb002/railsapp.git .
+ 
 b) develop ( dev )
  git clone -b develop https://github.com/artkb002/railsapp.git .
+ 
 1. Adjust Vagrantfile ( see SETUP SECTION in Vagrantfile )
 2. run vagrant up
 2. run vagrant ssh
